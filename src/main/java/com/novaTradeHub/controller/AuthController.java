@@ -23,6 +23,7 @@ import com.novaTradeHub.response.AuthResponse;
 import com.novaTradeHub.service.CustomUserDetailsService;
 import com.novaTradeHub.service.EmailService;
 import com.novaTradeHub.service.TwoFactorOtpService;
+import com.novaTradeHub.service.WatchListService;
 import com.novaTradeHub.utils.OtpUtils;
 
 @RestController
@@ -41,6 +42,9 @@ public class AuthController {
 	@Autowired
 	private EmailService emailService;
 
+	@Autowired
+	private WatchListService watchListService;
+
 	@PostMapping("/signup")
 	public ResponseEntity<AuthResponse> register(@RequestBody User user) throws Exception {
 
@@ -56,6 +60,8 @@ public class AuthController {
 		newUser.setEmail(user.getEmail());
 		newUser.setPassword(user.getPassword());
 		User savedUser = repository.save(newUser);
+
+		watchListService.createWatchList(savedUser);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
 

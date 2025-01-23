@@ -25,6 +25,7 @@ public class WalletServiceImpl implements WalletService {
 		if (wallet == null) {
 			wallet = new Wallet();
 			wallet.setUser(user);
+			repository.save(wallet);
 		}
 		return wallet;
 	}
@@ -49,7 +50,7 @@ public class WalletServiceImpl implements WalletService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Wallet walletToWalletTransfer(User sender, Wallet receiverWallet, Long amount) throws Exception {
+	public Wallet walletToWalletTransfer(User sender, Wallet receiverWallet, double amount) throws Exception {
 		Wallet senderWallet = getUserWallet(sender);
 		if (senderWallet.getBalance().compareTo(BigDecimal.valueOf(amount)) < 0) {
 			throw new Exception("Insufficient Balance");
@@ -70,7 +71,7 @@ public class WalletServiceImpl implements WalletService {
 
 		if (order.getOrderType().equals(OrderType.BUY)) {
 			BigDecimal newBalance = wallet.getBalance().subtract(order.getPrice());
-			if (newBalance.compareTo(order.getPrice()) < 0) {
+			if (wallet.getBalance().compareTo(order.getPrice()) < 0) {
 				throw new Exception("Insufficient Balance");
 			}
 			wallet.setBalance(newBalance);

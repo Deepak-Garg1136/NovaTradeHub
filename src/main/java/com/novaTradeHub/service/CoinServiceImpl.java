@@ -30,7 +30,7 @@ public class CoinServiceImpl implements CoinService {
 
 	@Override
 	public List<Coin> getCoinList(int page) throws Exception {
-		String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10@page=" + page;
+		String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10&page=" + page;
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -83,24 +83,24 @@ public class CoinServiceImpl implements CoinService {
 			coin.setSymbol(rootNode.get("symbol").asText());
 			coin.setImage(rootNode.get("image").get("large").asText());
 
-			JsonNode marketNode = rootNode.get("market-data");
+			JsonNode marketNode = rootNode.get("market_data");
 			coin.setCurrentPrice(marketNode.get("current_price").get("usd").asDouble());
 			coin.setMarketCap(marketNode.get("market_cap").get("usd").asLong());
-			coin.setMarketCapRank(marketNode.get("market_cap_rank").get("usd").asInt());
+			coin.setMarketCapRank(marketNode.get("market_cap_rank").asInt());
 			coin.setTotalVolume(marketNode.get("total_volume").get("usd").asLong());
 			coin.setHigh24h(marketNode.get("high_24h").get("usd").asDouble());
 			coin.setLow24h(marketNode.get("low_24h").get("usd").asDouble());
-			coin.setPriceChange24h(marketNode.get("price_change_24h").get("usd").asDouble());
-			coin.setPriceChangePercentage24h(marketNode.get("price_change_percentage_24h").get("usd").asDouble());
-			coin.setMarketCapChange24h(marketNode.get("market_cap_change_24h").get("usd").asLong());
-			coin.setMarketCapChangePercentage24h(
-					marketNode.get("market_cap_change_percentage_24h").get("usd").asLong());
-			coin.setTotalSupply(marketNode.get("total_supply").get("usd").asLong());
+			coin.setPriceChange24h(marketNode.get("price_change_24h").asDouble());
+			coin.setPriceChangePercentage24h(marketNode.get("price_change_percentage_24h").asDouble());
+			coin.setMarketCapChange24h(marketNode.get("market_cap_change_24h").asLong());
+			coin.setMarketCapChangePercentage24h(marketNode.get("market_cap_change_percentage_24h").asLong());
+			coin.setTotalSupply(marketNode.get("total_supply").asLong());
 
 			repository.save(coin);
 
 			return responseEntity.getBody();
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
+			System.out.println(e.getMessage());
 			throw new Exception(e.getMessage());
 		}
 	}
@@ -133,7 +133,7 @@ public class CoinServiceImpl implements CoinService {
 
 	@Override
 	public String getTop50CoinsByMarketCapRank() throws Exception {
-		String url = "https://api.coingecko.com/api/v3/coins/markets/vs_currency=usd&per_page=50&page=1";
+		String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=50&page=1";
 
 		RestTemplate restTemplate = new RestTemplate();
 

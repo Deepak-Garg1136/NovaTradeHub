@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.novaTradeHub.domain.WalletTransactionType;
 import com.novaTradeHub.models.User;
 import com.novaTradeHub.models.Wallet;
 import com.novaTradeHub.models.Withdrawal;
 import com.novaTradeHub.service.UserService;
 import com.novaTradeHub.service.WalletService;
+import com.novaTradeHub.service.WalletTransactionService;
 import com.novaTradeHub.service.WithdrawalService;
 
 @RestController
@@ -32,6 +34,9 @@ public class WIthdrawalController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private WalletTransactionService walletTransactionService;
+
 	@PostMapping("/api/withdrawal/{amount}")
 	public ResponseEntity<?> withdrawalRequest(@PathVariable long amount, @RequestHeader("Authorization") String jwt)
 			throws Exception {
@@ -40,6 +45,10 @@ public class WIthdrawalController {
 
 		Withdrawal withdrawal = withdrawalService.requestWithdrawal(amount, user);
 		walletService.addBalance(wallet, -withdrawal.getAmount());
+
+		walletTransactionService.createTransaction(wallet, "Withdrawing Money", WalletTransactionType.WITHDRAWAL, null,
+				withdrawal.getAmount(), user);
+
 		return new ResponseEntity<>(withdrawal, HttpStatus.OK);
 	}
 

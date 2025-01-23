@@ -31,5 +31,8 @@ public class WalletTransaction {
 
 	private String purpose;
 
-	private long amount;
+	private double amount;
+
+	@ManyToOne
+	private User user;
 }

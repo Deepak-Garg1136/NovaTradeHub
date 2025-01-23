@@ -38,7 +38,6 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order createOrder(User user, OrderItem orderItem, OrderType orderType) {
 		double price = orderItem.getCoin().getCurrentPrice() * orderItem.getQuantity();
-
 		Order order = new Order();
 		order.setUser(user);
 		order.setOrderItem(orderItem);
@@ -118,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
 
 			if (assetToSell.getQuantity() >= quantity) {
 				order.setStatus(OrderStatus.SUCCESS);
-				order.setOrderType(OrderType.BUY);
+				order.setOrderType(OrderType.SELL);
 				Order savedOrder = repository.save(order);
 				walletService.payOrderPayment(savedOrder, user);
 

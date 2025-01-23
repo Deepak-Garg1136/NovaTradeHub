@@ -1,5 +1,7 @@
 package com.novaTradeHub.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.novaTradeHub.domain.USER_ROLE;
 
 import jakarta.persistence.Embedded;
@@ -21,6 +23,8 @@ public class User {
 	private Long id;
 	private String fullName;
 	private String email;
+
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 
 	@Embedded
