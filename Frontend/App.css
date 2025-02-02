@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Alkatra&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Libre Baskerville", serif;
+  /* font-family: "Alkatra", cursive; */
+}
+#icons svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+#open,
+#chatBot {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.apexcharts-menu {
+  background-color: hsl(
+    var(--popover)
+  ) !important; /* Background for dropdown */
+  color: hsl(var(--popover-foreground)) !important; /* Text color */
+  border: 1px solid hsl(var(--border)); /* Optional: Add border for better contrast */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.apexcharts-menu-item:hover {
+  background-color: hsl(var(--muted)); /* Highlight item on hover */
+  color: hsl(var(--muted-foreground)); /* Muted text on hover */
+  cursor: pointer;
+}
+
+.chatBot_mid_section,
+.portfolio,
+.transactions,
+.home_asset_table {
+  scrollbar-width: none;
+}
+.custom-swal-title {
+  font-size: 10px; /* Title-specific font size */
+}
+
+.custom-swal-content {
+  font-size: 8px; /* Content-specific font size */
+}
